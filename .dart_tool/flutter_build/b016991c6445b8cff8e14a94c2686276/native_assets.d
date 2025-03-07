@@ -1,0 +1,1 @@
+ D:\\financialApp\\.dart_tool\\flutter_build\\b016991c6445b8cff8e14a94c2686276\\native_assets.yaml: 

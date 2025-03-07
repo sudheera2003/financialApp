@@ -1,0 +1,7 @@
+# Ignore build outputs
+build/
+
+# Ignore Firebase SDK and related large files
+*.lib
+*.ilk
+*.zip
