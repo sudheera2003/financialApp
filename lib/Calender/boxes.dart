@@ -1,3 +1,6 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
+import 'package:financial_app/Calender/transaction.dart';
 
-late Box boxTransactions;
+// Declare Hive boxes
+late Box<Transaction> boxTransactions; // Box for transactions
+

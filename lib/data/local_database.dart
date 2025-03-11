@@ -10,7 +10,7 @@ class ItemDatabase {
       'Food',
       'Social life',
     ];
-
+    
     inList = [
       'Salary',
       'Gifts',

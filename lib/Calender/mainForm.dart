@@ -36,8 +36,11 @@ class _MainFormState extends State<MainForm> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(title), // Dynamic title based on selected tab
+        backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+        title: Text(title,style: TextStyle(color: Colors.white)), // Dynamic title based on selected tab
         bottom: TabBar(
+          indicatorColor: Colors.deepOrangeAccent,
+          labelColor: Colors.white,
           controller: _tabController, // Attach the controller
           tabs: const [
             Tab(icon: Icon(Icons.attach_money), text: "Income"),
@@ -46,6 +49,7 @@ class _MainFormState extends State<MainForm> with SingleTickerProviderStateMixin
         ),
       ),
       body: TabBarView(
+        
         controller: _tabController,
         children: const [
           FormScreen(type: "Income", showAppBar: false),

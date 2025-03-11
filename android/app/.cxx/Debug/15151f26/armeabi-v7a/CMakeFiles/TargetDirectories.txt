@@ -1,0 +1,2 @@
+C:/Users/chamidu/Desktop/financial app/financialApp/android/app/.cxx/Debug/15151f26/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/chamidu/Desktop/financial app/financialApp/android/app/.cxx/Debug/15151f26/armeabi-v7a/CMakeFiles/rebuild_cache.dir

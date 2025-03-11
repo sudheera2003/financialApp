@@ -22,7 +22,6 @@ class _FormScreenState extends State<FormScreen> {
   late TextEditingController _controller_amount;
   late TextEditingController _controller_category;
   late TextEditingController _controller_account;
-  IconData? _selectedIcon;
 
   @override
   void initState() {
@@ -44,8 +43,6 @@ class _FormScreenState extends State<FormScreen> {
       text: widget.transaction?.accountType ?? "",
     );
 
-    // If editing, set icons (optional if stored)
-    _selectedIcon = null;
   }
 
   void clearForm() {
@@ -54,7 +51,6 @@ class _FormScreenState extends State<FormScreen> {
       _controller_amount.clear();
       _controller_category.clear();
       _controller_account.clear();
-      _selectedIcon = null;
     });
   }
 
@@ -62,10 +58,11 @@ class _FormScreenState extends State<FormScreen> {
   Widget build(BuildContext context) {
     String type = widget.type ?? "";
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 49, 50, 56),
       appBar: widget.showAppBar
           ? AppBar(
-              title: Text(type),
+            backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+              title: Text(type,style: TextStyle(color: Colors.white),),
               centerTitle: true,
             )
           : null,
@@ -80,12 +77,13 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Date", style: TextStyle(fontSize: 16))),
+                      child: Text("Date", style: TextStyle(fontSize: 16,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
                       controller: _controller_date,
                       readOnly: true,
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                       onTap: () {
                         ModalHelper.openCalendar(
                           context: context,
@@ -97,7 +95,6 @@ class _FormScreenState extends State<FormScreen> {
                           },
                         );
                       },
-                      style: TextStyle(fontSize: 16, color: Colors.black),
                     ),
                   ),
                 ],
@@ -109,7 +106,7 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Amount", style: TextStyle(fontSize: 16))),
+                      child: Text("Amount", style: TextStyle(fontSize: 16,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
@@ -119,7 +116,7 @@ class _FormScreenState extends State<FormScreen> {
                         ModalHelper.openCalculator(
                             context: context, controller: _controller_amount);
                       },
-                      style: TextStyle(fontSize: 16, color: Colors.black),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ],
@@ -131,27 +128,21 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Category", style: TextStyle(fontSize: 16))),
+                      child: Text("Category", style: TextStyle(fontSize: 16,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
                       controller: _controller_category,
                       readOnly: true,
                       decoration: InputDecoration(
-                        prefixIcon: _selectedIcon != null
-                            ? Icon(_selectedIcon, color: Colors.blue)
-                            : null,
                         suffixIcon: Icon(Icons.arrow_drop_down),
                       ),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                       onTap: () {
-                        ModalHelper.openSelectionModal_1(
+                        ModalHelper.openSelectionModal(
                           context: context,
                           controller: _controller_category,
-                          onIconSelected: (icon) {
-                            setState(() {
-                              _selectedIcon = icon;
-                            });
-                          },
+                          listType:widget.type ?? "",
                         );
                       },
                     ),
@@ -165,7 +156,7 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Account", style: TextStyle(fontSize: 16))),
+                      child: Text("Account", style: TextStyle(fontSize: 16,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
@@ -174,10 +165,12 @@ class _FormScreenState extends State<FormScreen> {
                       decoration: InputDecoration(
                         suffixIcon: Icon(Icons.arrow_drop_down),
                       ),
+                      style: TextStyle(fontSize: 16, color: Colors.white),
                       onTap: () {
-                        ModalHelper.openSelectionModal_2(
+                        ModalHelper.openSelectionModal(
                           context: context,
                           controller: _controller_account,
+                          listType: "Account",
                         );
                       },
                     ),
@@ -267,7 +260,7 @@ class _FormScreenState extends State<FormScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 202, 34, 104),
+                        backgroundColor: Color.fromARGB(255, 29, 29, 29),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
@@ -294,20 +287,20 @@ class _FormScreenState extends State<FormScreen> {
                           : clearForm, // Clear the form if creating a new transaction
                       style: ElevatedButton.styleFrom(
                         backgroundColor: widget.transaction != null
-                            ? Colors.red
-                            : Colors.transparent,
+                            ? Colors.deepOrangeAccent
+                            : Colors.deepOrangeAccent,
                         foregroundColor: widget.transaction != null
                             ? Colors.white
-                            : Color.fromARGB(255, 78, 8, 8),
+                            : const Color.fromARGB(255, 255, 255, 255),
                         elevation: widget.transaction != null ? 2 : 0,
                         shadowColor: widget.transaction != null
-                            ? Colors.redAccent
+                            ? Colors.deepOrangeAccent
                             : Colors.transparent,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         side: widget.transaction == null
                             ? BorderSide(
-                                color: Color.fromARGB(125, 0, 0, 0), width: 1)
+                                color: Colors.black, width: 1)
                             : BorderSide.none,
                       ),
                       child:

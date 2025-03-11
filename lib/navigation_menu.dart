@@ -1,9 +1,9 @@
 import 'package:financial_app/Calender/calanderPage.dart';
 import 'package:financial_app/menus/home.dart';
 import 'package:financial_app/menus/more.dart';
-import 'package:financial_app/menus/stats.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:financial_app/stats/stats.dart';
 
 class NavigationMenu extends StatelessWidget {
 
