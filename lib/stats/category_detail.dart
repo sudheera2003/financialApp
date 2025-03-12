@@ -280,7 +280,6 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
     }
   }
 
-  // Helper method to create spots for the line chart
   
 
   List<FlSpot> _createSpots() {
@@ -292,7 +291,6 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
     }).toList();
   }
 
-// Helper method to get the account type for the selected category
 String _getAccountTypeForCategory() {
   final transactions = boxTransactions.values
       .cast<Transaction>()
