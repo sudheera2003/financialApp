@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart'; // For charts
-import 'package:intl/intl.dart'; // For DateFormat
-import 'package:financial_app/Calender/transaction.dart'; // Import the Transaction class
-import 'package:financial_app/Calender/boxes.dart'; // Import the boxTransactions
+import 'package:fl_chart/fl_chart.dart';
+import 'package:intl/intl.dart';
+import 'package:financial_app/Calender/transaction.dart';
+import 'package:financial_app/Calender/boxes.dart';
 
 class CategoryDetailPage extends StatefulWidget {
   final String categoryName;
@@ -20,15 +20,15 @@ class CategoryDetailPage extends StatefulWidget {
 }
 
 class _CategoryDetailPageState extends State<CategoryDetailPage> {
-  String selectedPeriod = 'Monthly'; // Default selected period
-  DateTime _selectedMonth = DateTime.now(); // Track the selected month
-  DateTime _selectedStartDate = DateTime.now(); // Track the selected start date
-  DateTime _selectedEndDate = DateTime.now(); // Track the selected end date
-  int? _selectedIndex; // Track the selected point index
+  String selectedPeriod = 'Monthly';
+  DateTime _selectedMonth = DateTime.now();
+  DateTime _selectedStartDate = DateTime.now();
+  DateTime _selectedEndDate = DateTime.now();
+  int? _selectedIndex;
 
   // Add variables to track visible year range
-  int _visibleStartYear = DateTime.now().year - 5; // Start year for visible range
-  int _visibleEndYear = DateTime.now().year + 5; // End year for visible range
+  int _visibleStartYear = DateTime.now().year - 5;
+  int _visibleEndYear = DateTime.now().year + 5;
 
   // Add a ScrollController for horizontal scrolling
   final ScrollController _scrollController = ScrollController();
@@ -50,7 +50,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Dispose the controller to avoid memory leaks
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -59,10 +59,10 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
     setState(() {
       if (forward) {
         // Load future years
-        _visibleEndYear += 5; // Extend the visible range by 5 years
+        _visibleEndYear += 5;
       } else {
         // Load past years
-        _visibleStartYear -= 5; // Extend the visible range by 5 years
+        _visibleStartYear -= 5;
       }
     });
   }
@@ -110,7 +110,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
 
       for (var txn in transactions) {
         if (txn.date.year == _selectedMonth.year) {
-          final month = txn.date.month - 1; // Convert month to index (0-11)
+          final month = txn.date.month - 1;
           monthlyData[month] += txn.amount;
         }
       }
@@ -122,7 +122,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
   // Helper method to get all weeks
   List<DateTimeRange> _getAllWeeks() {
     final List<DateTimeRange> allWeeks = [];
-    DateTime currentStart = DateTime(2020); // Start from a specific year
+    DateTime currentStart = DateTime(2020);
     final DateTime now = DateTime.now();
 
     // Generate past weeks
@@ -188,25 +188,25 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
         _selectedMonth = DateTime(_selectedMonth.year + increment, _selectedMonth.month, 1);
 
         // Update the visible year range to center the selected year
-        _visibleStartYear = _selectedMonth.year - 5; // Start from 5 years before the selected year
-        _visibleEndYear = _selectedMonth.year + 5; // End at 5 years after the selected year
+        _visibleStartYear = _selectedMonth.year - 5;
+        _visibleEndYear = _selectedMonth.year + 5;
 
         // Update selected index for annual view
         _selectedIndex = 5; // Center the selected year in the visible range
       } else if (selectedPeriod == 'Weekly') {
         // Change the week when "Weekly" is selected
-        _selectedMonth = _selectedMonth.add(Duration(days: 7 * increment)); // Increment or decrement by 7 days
-        _selectedIndex = _getWeekIndex(_selectedMonth); // Update selected index for weekly view
+        _selectedMonth = _selectedMonth.add(Duration(days: 7 * increment));
+        _selectedIndex = _getWeekIndex(_selectedMonth);
       } else {
         // Change the month for other periods
         _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + increment, 1);
-        _selectedIndex = _selectedMonth.month - 1; // Update selected index for monthly view
+        _selectedIndex = _selectedMonth.month - 1;
       }
 
       // Scroll to the selected point after changing the period
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_selectedIndex != null) {
-          final double scrollPosition = _selectedIndex! * 100; // Adjust based on your data point width
+          final double scrollPosition = _selectedIndex! * 100;
           _scrollController.animateTo(
             scrollPosition,
             duration: Duration(milliseconds: 500),
@@ -288,7 +288,7 @@ class _CategoryDetailPageState extends State<CategoryDetailPage> {
     return data.asMap().entries.map((entry) {
       final index = entry.key;
       final value = entry.value;
-      return FlSpot(index.toDouble(), value); // x is double, y is double
+      return FlSpot(index.toDouble(), value);
     }).toList();
   }
 
@@ -329,19 +329,19 @@ String _getAccountTypeForCategory() {
 
     if (filteredTransactions.isNotEmpty) {
       // Return the account type of the most recent transaction in the filtered list
-      filteredTransactions.sort((a, b) => b.date.compareTo(a.date)); // Sort by date (most recent first)
+      filteredTransactions.sort((a, b) => b.date.compareTo(a.date));
       return filteredTransactions.first.accountType;
     }
   }
 
-  return 'No Account Type'; // Default value if no transactions are found
+  return 'No Account Type';
 }
 
 @override
 Widget build(BuildContext context) {
   final totalAmount = _getTotalAmountForPeriod();
   final spots = _createSpots();
-  final accountType = _getAccountTypeForCategory(); // Fetch the account type
+  final accountType = _getAccountTypeForCategory(); 
 
   // Calculate the maximum Y value from the spots
   final maxY = spots.map((spot) => spot.y).reduce((a, b) => a > b ? a : b);
@@ -352,7 +352,7 @@ Widget build(BuildContext context) {
       backgroundColor: const Color.fromARGB(255, 49, 50, 56),
       title: Text(widget.categoryName),
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(60), // Adjust height as needed
+        preferredSize: Size.fromHeight(60),
         child: Column(
           children: [
             GestureDetector(
@@ -372,12 +372,12 @@ Widget build(BuildContext context) {
                     ),
                     Text(
                       selectedPeriod == 'Annually'
-                          ? DateFormat('yyyy').format(_selectedMonth) // Display only the year for "Annually"
+                          ? DateFormat('yyyy').format(_selectedMonth)
                           : selectedPeriod == 'Weekly'
-                              ? _getWeeklyDateRange(_selectedMonth) // Display weekly date range
+                              ? _getWeeklyDateRange(_selectedMonth)
                               : selectedPeriod == 'Period'
-                                  ? '${DateFormat('MM/dd/yyyy').format(_selectedStartDate)} - ${DateFormat('MM/dd/yyyy').format(_selectedEndDate)}' // Display date range for "Period"
-                                  : DateFormat('MMMM yyyy').format(_selectedMonth), // Display full month and year for other periods
+                                  ? '${DateFormat('MM/dd/yyyy').format(_selectedStartDate)} - ${DateFormat('MM/dd/yyyy').format(_selectedEndDate)}'
+                                  : DateFormat('MMMM yyyy').format(_selectedMonth),
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
                     ),
                     IconButton(
@@ -396,7 +396,7 @@ Widget build(BuildContext context) {
           onSelected: (String value) {
             setState(() {
               selectedPeriod = value;
-              _selectedIndex = null; // Reset selected index when period changes
+              _selectedIndex = null;
             });
           },
           itemBuilder: (BuildContext context) {
@@ -438,7 +438,7 @@ Widget build(BuildContext context) {
         children: [
           // Line Chart Section
           Container(
-            height: 300, // Increased container height
+            height: 300,
             decoration: BoxDecoration(
               color: const Color.fromARGB(255, 39, 40, 46),
               borderRadius: BorderRadius.circular(10),
@@ -446,10 +446,10 @@ Widget build(BuildContext context) {
             child: Padding(
               padding: const EdgeInsets.only(bottom: 20, top: 20, left: 20, right: 20), // Adjusted padding
               child: SingleChildScrollView(
-                controller: _scrollController, // Attach the ScrollController
-                scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                controller: _scrollController,
+                scrollDirection: Axis.horizontal,
                 child: SizedBox(
-                  width: spots.length * 100, // Adjust width based on the number of data points
+                  width: spots.length * 100, 
                   child: Stack(
                     children: [
                       LineChart(
@@ -461,12 +461,12 @@ Widget build(BuildContext context) {
                                 showTitles: true,
                                 getTitlesWidget: (value, meta) {
                                   if (selectedPeriod == 'Weekly') {
-                                    // Display week ranges for "Weekly"
+                                    
                                     final allWeeks = _getAllWeeks();
                                     if (value.toInt() < allWeeks.length) {
                                       final weekRange = allWeeks[value.toInt()];
                                       return Transform.rotate(
-                                        angle: -0.5, // Rotate labels
+                                        angle: -0.5, 
                                         child: Container(
                                           margin: const EdgeInsets.only(top: 10),
                                           child: Text(
@@ -477,7 +477,7 @@ Widget build(BuildContext context) {
                                       );
                                     }
                                   } else if (selectedPeriod == 'Annually') {
-                                    // Display years for "Annually"
+                                    
                                     final year = _visibleStartYear + value.toInt();
                                     return Container(
                                       margin: const EdgeInsets.only(top: 20),
@@ -487,7 +487,7 @@ Widget build(BuildContext context) {
                                       ),
                                     );
                                   } else if (selectedPeriod == 'Monthly') {
-                                    // Display months for other periods
+                                    
                                     final months = [
                                       'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
@@ -502,12 +502,12 @@ Widget build(BuildContext context) {
                                   }
                                   return const SizedBox.shrink();
                                 },
-                                reservedSize: 30, // Space for labels
-                                interval: 1, // Ensure each week is represented
+                                reservedSize: 30,
+                                interval: 1,
                               ),
                             ),
                             leftTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false), // Disable left titles
+                              sideTitles: SideTitles(showTitles: false),
                             ),
                             rightTitles: AxisTitles(
                               sideTitles: SideTitles(showTitles: false),

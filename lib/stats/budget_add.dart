@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BudgetAdd extends StatefulWidget {
   final String category;
-  final Function(String period, double amount) onSave;
+  final Function(double amount) onSave;
 
   const BudgetAdd({
     super.key,
@@ -15,7 +15,6 @@ class BudgetAdd extends StatefulWidget {
 }
 
 class _BudgetAddState extends State<BudgetAdd> {
-  String selectedPeriod = 'Monthly'; // Default selected period
   String amount = '0';
   final TextEditingController _amountController = TextEditingController();
 
@@ -70,7 +69,7 @@ class _BudgetAddState extends State<BudgetAdd> {
               const SizedBox(height: 16),
               TextField(
                 controller: _amountController,
-                keyboardType: TextInputType.none, // Disable default keyboard
+                keyboardType: TextInputType.none,
                 decoration: InputDecoration(
                   hintText: 'Enter Amount',
                   hintStyle: TextStyle(color: Colors.grey[400]),
@@ -82,7 +81,7 @@ class _BudgetAddState extends State<BudgetAdd> {
                 ),
                 style: const TextStyle(color: Colors.white),
                 textAlign: TextAlign.center,
-                readOnly: true, // Make the field read-only
+                readOnly: true,
               ),
               const SizedBox(height: 16),
               // Number Pad
@@ -127,7 +126,7 @@ class _BudgetAddState extends State<BudgetAdd> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context); // Close the pop-up
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepOrangeAccent
@@ -137,8 +136,8 @@ class _BudgetAddState extends State<BudgetAdd> {
                   ElevatedButton(
                     onPressed: () {
                       final double parsedAmount = double.parse(amount);
-                     widget.onSave(selectedPeriod, parsedAmount); // Trigger callback
-                      Navigator.pop(context); // Close the pop-up
+                      widget.onSave(parsedAmount);
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 26, 26, 26),

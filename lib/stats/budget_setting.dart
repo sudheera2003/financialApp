@@ -1,35 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // For DateFormat
-import 'package:financial_app/Calender/modelhelper.dart'; // Import the ModalHelper
-import 'budget_add.dart'; // Import the BudgetAdd widget
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:financial_app/Calender/modelhelper.dart';
+import 'budget_add.dart';
 
 class BudgetSetting extends StatefulWidget {
-  const BudgetSetting({super.key});
+  final String selectedPeriod;
+  final DateTime selectedMonth;
+  final DateTime selectedStartDate;
+  final DateTime selectedEndDate;
+
+  const BudgetSetting({
+    super.key,
+    required this.selectedPeriod,
+    required this.selectedMonth,
+    required this.selectedStartDate,
+    required this.selectedEndDate,
+  });
 
   @override
   _BudgetSettingState createState() => _BudgetSettingState();
 }
 
 class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProviderStateMixin {
-  String selectedPeriod = 'Monthly'; // Default selected period
-  DateTime _selectedMonth = DateTime.now(); // Track the selected month
- // Track the selected point index
+  late String selectedPeriod;
+  late DateTime _selectedMonth;
+  late DateTime _selectedStartDate;
+  late DateTime _selectedEndDate;
+  late TabController _tabController;
 
-  late TabController _tabController; // TabController for managing tabs
+
+  Map<String, double> budgetAmounts = {};
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this); // Initialize TabController
+    selectedPeriod = widget.selectedPeriod;
+    _selectedMonth = widget.selectedMonth;
+    _selectedStartDate = widget.selectedStartDate;
+    _selectedEndDate = widget.selectedEndDate;
+    _tabController = TabController(length: 2, vsync: this);
+    _loadBudgetAmounts();
   }
 
   @override
   void dispose() {
-    _tabController.dispose(); // Dispose the TabController
+    _tabController.dispose();
     super.dispose();
   }
 
-  // Method to open the BudgetAdd pop-up
+  // Method to load stored budget data
+  Future<void> _loadBudgetAmounts() async {
+    final prefs = await SharedPreferences.getInstance();
+    String periodKey = _getPeriodKey();
+    setState(() {
+      budgetAmounts = Map.fromEntries(
+        prefs.getKeys()
+            .where((key) => key.startsWith("budget_${periodKey}_"))
+            .map((key) => MapEntry(
+                  key.replaceFirst("budget_${periodKey}_", ""), prefs.getDouble(key) ?? 0.0,
+                )),
+      );
+    });
+  }
+
+  // Method to save budget data with period
+  Future<void> _saveBudgetAmount(String category, double amount) async {
+    final prefs = await SharedPreferences.getInstance();
+    String periodKey = _getPeriodKey();
+    await prefs.setDouble("budget_${periodKey}_$category", amount);
+  }
+
+  // Helper method to generate a period key based on the selected period
+  String _getPeriodKey() {
+    if (selectedPeriod == 'Weekly') {
+      final startOfWeek = _selectedMonth.subtract(Duration(days: _selectedMonth.weekday - 1));
+      return '${startOfWeek.year}_${startOfWeek.month}_${startOfWeek.day}';
+    } else if (selectedPeriod == 'Monthly') {
+      return '${_selectedMonth.year}_${_selectedMonth.month}';
+    } else if (selectedPeriod == 'Annually') {
+      return '${_selectedMonth.year}';
+    } else if (selectedPeriod == 'Period') {
+      return '${_selectedStartDate.year}_${_selectedStartDate.month}_${_selectedStartDate.day}_${_selectedEndDate.year}_${_selectedEndDate.month}_${_selectedEndDate.day}';
+    }
+    return 'default';
+  }
+
+  // Open BudgetAdd pop-up
   void _openBudgetAdd(BuildContext context, String category) {
     showModalBottomSheet(
       context: context,
@@ -38,81 +95,86 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
       builder: (context) {
         return BudgetAdd(
           category: category,
-          onSave: (period, amount) {
-            setState(() {}); // Refresh the UI
-            print('Budget for $category: $amount ($period)');
+          onSave: (amount) async {
+            setState(() {
+              budgetAmounts[category] = amount;
+            });
+            await _saveBudgetAmount(category, amount);
+            Navigator.pop(context, true);
           },
         );
       },
     );
   }
 
-  // Helper method to get all weeks
-  List<DateTimeRange> _getAllWeeks() {
-    final List<DateTimeRange> allWeeks = [];
-    DateTime currentStart = DateTime(2020); // Start from a specific year
-    final DateTime now = DateTime.now();
+  // Change month, week, or year based on the selected period
+  void _changeMonth(int increment) {
+    setState(() {
+      if (selectedPeriod == 'Annually') {
+        _selectedMonth = DateTime(_selectedMonth.year + increment, _selectedMonth.month, 1);
+      } else if (selectedPeriod == 'Weekly') {
+        _selectedMonth = _selectedMonth.add(Duration(days: 7 * increment));
+      } else {
+        _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + increment, 1);
+      }
+      _loadBudgetAmounts();
+    });
+  }
 
-    // Generate past weeks
-    while (currentStart.isBefore(now)) {
-      final currentEnd = currentStart.add(Duration(days: 6));
-      allWeeks.add(DateTimeRange(start: currentStart, end: currentEnd));
-      currentStart = currentStart.add(Duration(days: 7));
+  // Show date range picker for "Period" option
+  Future<void> _showDateRangePicker(BuildContext context) async {
+    final DateTimeRange? picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+      initialDateRange: DateTimeRange(
+        start: _selectedStartDate,
+        end: _selectedEndDate,
+      ),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.dark().copyWith(
+            dialogBackgroundColor: const Color.fromARGB(255, 49, 50, 56),
+            textTheme: TextTheme(
+              bodyMedium: TextStyle(color: Colors.white),
+            ),
+            colorScheme: ColorScheme.dark(
+              primary: Colors.red,
+              onPrimary: Colors.white,
+              surface: const Color.fromARGB(255, 49, 50, 56),
+              onSurface: Colors.white,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && picked != DateTimeRange(start: _selectedStartDate, end: _selectedEndDate)) {
+      setState(() {
+        _selectedStartDate = picked.start;
+        _selectedEndDate = picked.end;
+      });
+      _loadBudgetAmounts();
     }
-
-    // Generate future weeks (up to 5 years ahead)
-    currentStart = now;
-    final DateTime futureLimit = DateTime(now.year + 5, now.month, now.day);
-    while (currentStart.isBefore(futureLimit)) {
-      final currentEnd = currentStart.add(Duration(days: 6));
-      allWeeks.add(DateTimeRange(start: currentStart, end: currentEnd));
-      currentStart = currentStart.add(Duration(days: 7));
-    }
-
-    return allWeeks;
   }
 
   // Get the weekly date range
   String _getWeeklyDateRange(DateTime date) {
-    final allWeeks = _getAllWeeks();
-    final weekIndex = _getWeekIndex(date);
-    final weekRange = allWeeks[weekIndex];
-    return '${DateFormat('MMMM yyyy').format(weekRange.start)} (${weekRange.start.day} - ${weekRange.end.day})';
-  }
-
-  // Helper method to get the index of the selected week
-  int _getWeekIndex(DateTime date) {
-    final allWeeks = _getAllWeeks();
-    for (var i = 0; i < allWeeks.length; i++) {
-      final weekRange = allWeeks[i];
-      if (date.isAfter(weekRange.start.subtract(Duration(days: 1))) &&
-          date.isBefore(weekRange.end.add(Duration(days: 1)))) {
-        return i;
-      }
-    }
-    return 0;
-  }
-
-  // Change month, week, or year based on the selected period
-  void _changeMonth(int increment) {
-    setState(() {
-      if (selectedPeriod == 'Weekly') {
-        // Change the week when "Weekly" is selected
-        _selectedMonth = _selectedMonth.add(Duration(days: 7 * increment));
-      } else if (selectedPeriod == 'Monthly') {
-        // Change the month for "Monthly"
-        _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + increment, 1);
-      } else if (selectedPeriod == 'Annually') {
-        // Change the year for "Annually"
-        _selectedMonth = DateTime(_selectedMonth.year + increment, _selectedMonth.month, 1);
-      }
-    });
+    final startOfWeek = date.subtract(Duration(days: date.weekday - 1));
+    final endOfWeek = startOfWeek.add(Duration(days: 6));
+    return '${DateFormat('MMMM yyyy').format(startOfWeek)} (${startOfWeek.day} - ${endOfWeek.day})';
   }
 
   @override
   Widget build(BuildContext context) {
-    final incomes = ModalHelper.getItems("Income"); // Fetch income items
-    final expenses = ModalHelper.getItems("Expenses"); // Fetch expense items
+    final incomes = ModalHelper.getItems("Income");
+    final expenses = ModalHelper.getItems("Expenses");
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 49, 50, 56),
@@ -120,12 +182,14 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
         backgroundColor: const Color.fromARGB(255, 49, 50, 56),
         title: const Text('Budget Setting'),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(100), // Adjust height to accommodate TabBar
+          preferredSize: Size.fromHeight(100),
           child: Column(
             children: [
               GestureDetector(
                 onTap: () {
-                  // Implement the logic for showing the date range picker if needed
+                  if (selectedPeriod == 'Period') {
+                    _showDateRangePicker(context);
+                  }
                 },
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
@@ -137,11 +201,13 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
                         onPressed: () => _changeMonth(-1),
                       ),
                       Text(
-                        selectedPeriod == 'Weekly'
-                            ? _getWeeklyDateRange(_selectedMonth) // Display weekly date range
-                            : selectedPeriod == 'Monthly'
-                                ? DateFormat('MMMM yyyy').format(_selectedMonth) // Display full month and year
-                                : DateFormat('yyyy').format(_selectedMonth), // Display only the year
+                        selectedPeriod == 'Annually'
+                            ? DateFormat('yyyy').format(_selectedMonth)
+                            : selectedPeriod == 'Weekly'
+                                ? _getWeeklyDateRange(_selectedMonth)
+                                : selectedPeriod == 'Period'
+                                    ? '${DateFormat('MM/dd/yyyy').format(_selectedStartDate)} - ${DateFormat('MM/dd/yyyy').format(_selectedEndDate)}'
+                                    : DateFormat('MMMM yyyy').format(_selectedMonth),
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
                       ),
                       IconButton(
@@ -152,7 +218,6 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
                   ),
                 ),
               ),
-              // Add TabBar here
               TabBar(
                 controller: _tabController,
                 tabs: const [
@@ -171,10 +236,11 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
             onSelected: (String value) {
               setState(() {
                 selectedPeriod = value;
+                _loadBudgetAmounts();
               });
             },
             itemBuilder: (BuildContext context) {
-              return {'Weekly', 'Monthly', 'Annually'}.map((String choice) {
+              return {'Weekly', 'Monthly', 'Annually', 'Period'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
                   child: Text(
@@ -193,8 +259,8 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
                     selectedPeriod[0],
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
-                  const SizedBox(width: 4),
-                  const Icon(
+                  SizedBox(width: 4),
+                  Icon(
                     Icons.arrow_drop_down,
                     color: Colors.white,
                     size: 20,
@@ -208,9 +274,7 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Income Tab
           _buildCategorySection(incomes),
-          // Expenses Tab
           _buildCategorySection(expenses),
         ],
       ),
@@ -229,17 +293,15 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
               style: TextStyle(color: Colors.white),
             ),
             trailing: Text(
-              "Rs. 00",
+              "Rs. ${budgetAmounts[item]?.toStringAsFixed(2) ?? '0.00'}",
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              _openBudgetAdd(context, item); // Open the BudgetAdd pop-up
+              _openBudgetAdd(context, item);
             },
           ),
         );
       }).toList(),
     );
   }
-
-
 }
