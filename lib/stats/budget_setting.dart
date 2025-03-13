@@ -180,7 +180,7 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
       backgroundColor: const Color.fromARGB(255, 49, 50, 56),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 49, 50, 56),
-        title: const Text('Budget Setting'),
+        title: const Text('Budget Setting',style: TextStyle(color: Colors.white),),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(100),
           child: Column(
