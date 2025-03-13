@@ -16,19 +16,21 @@ class IncomeList extends StatefulWidget {
 class _IncomeListState extends State<IncomeList> {
 
   final _mybox = Hive.box('mybox');
-  ItemDatabase db = ItemDatabase();
+  late ItemDatabase db;
+
+  final _controller = TextEditingController();
 
   @override
   void initState() {
+    super.initState();
+    db = ItemDatabase();
     // if this is the first item open the app create default data
-    if(_mybox.get("INLIST") == null){
+    if (_mybox.get("INLIST") == null) {
       db.createInitialData();
-    }else{
-      db.loadData();
+    } else {
+      db.loadData(); // Load existing data
     }
   }
-  
-  final _controller = TextEditingController();
 
     void saveNewItem() {
       setState(() {

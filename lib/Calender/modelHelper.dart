@@ -4,21 +4,27 @@ import 'boxes.dart';
 import 'calculator.dart';
 import 'transaction.dart';
 import 'package:intl/intl.dart';
+import 'package:financial_app/data/local_database.dart';
 
 class ModalHelper {
+  // Fetch items dynamically from the ItemDatabase
   static List<String> getItems(String listType) {
+    final db = ItemDatabase();
+    db.loadData(); // Ensure the latest data is loaded
+
     switch (listType) {
       case "Income":
-        return ["Allowance", "Salary", "Petty cash", "Bonus"];
+        return db.inList; // Fetch income categories
       case "Expenses":
-        return ["Food", "Transport", "Entertainment", "Healthcare"];
+        return db.itemList; // Fetch expense categories
       case "Account":
-        return ["Cash", "Accounts", "Card"];
+        return ["Cash", "Accounts", "Card"]; // Hardcoded account types
       default:
         return [];
     }
   }
 
+  // Open a calendar modal for date selection
   static void openCalendar({
     required BuildContext context,
     required Function(DateTime) onDateSelected,
@@ -65,6 +71,7 @@ class ModalHelper {
     );
   }
 
+  // Open a calculator modal for amount input
   static void openCalculator({
     required BuildContext context,
     required TextEditingController controller,
@@ -96,6 +103,7 @@ class ModalHelper {
     );
   }
 
+  // Open a selection modal for choosing categories or accounts
   static void openSelectionModal({
     required BuildContext context,
     required TextEditingController controller,
@@ -143,6 +151,7 @@ class ModalHelper {
     );
   }
 
+  // Show a bottom sheet with transactions for a specific date
   static Future<void> showBottomSheetEvents(
     BuildContext context,
     List<Transaction> transactions,
