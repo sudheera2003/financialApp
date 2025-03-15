@@ -2,6 +2,7 @@
 import 'package:financial_app/pages/expense_list.dart';
 import 'package:financial_app/pages/income_list.dart';
 import 'package:flutter/material.dart';
+import 'package:financial_app/pages/currency_screen.dart';
 
 class More extends StatefulWidget {
   const More({super.key});
@@ -11,16 +12,12 @@ class More extends StatefulWidget {
 }
 
 class _MoreState extends State<More> {
-// void signOutUser(){
-//   FirebaseAuth.instance.signOut();
-// }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       appBar: AppBar(
-        title: Text('More', style: TextStyle(color: Colors.white)),
+        title: const Text('More', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       ),
@@ -40,7 +37,7 @@ class _MoreState extends State<More> {
                     );
                   },
                   child: Column(
-                    children: [
+                    children: const [
                       Icon(
                         Icons.payment,
                         color: Colors.white,
@@ -63,7 +60,7 @@ class _MoreState extends State<More> {
                     );
                   },
                   child: Column(
-                    children: [
+                    children: const [
                       Icon(
                         Icons.paid_rounded,
                         color: Colors.white,
@@ -78,7 +75,7 @@ class _MoreState extends State<More> {
                   width: 30,
                 ),
                 Column(
-                  children: [
+                  children: const [
                     Icon(
                       Icons.savings,
                       color: Colors.white,
@@ -96,22 +93,31 @@ class _MoreState extends State<More> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  children: [
-                    Icon(
-                      Icons.currency_exchange,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                    Text('Converter',
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CurrencyScreen()),
+                    );
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.currency_exchange,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                      Text('Converter',
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ],
+                  ),
                 ),
                 const SizedBox(
                   width: 30,
                 ),
                 Column(
-                  children: [
+                  children: const [
                     Icon(
                       Icons.lock,
                       color: Colors.white,
@@ -125,7 +131,7 @@ class _MoreState extends State<More> {
                   width: 30,
                 ),
                 Column(
-                  children: [
+                  children: const [
                     Icon(
                       Icons.reviews,
                       color: Colors.white,
