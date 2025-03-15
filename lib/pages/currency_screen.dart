@@ -75,9 +75,9 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1d2630),
+      backgroundColor: const Color.fromARGB(255, 49, 50, 56),
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.deepOrangeAccent,
         elevation: 0,
         foregroundColor: Colors.white,
         title: const Text("Currency Converter"),
@@ -196,7 +196,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                       const SizedBox(height: 10),
                       Text(
                         total.toStringAsFixed(2),
-                        style: const TextStyle(color: Colors.greenAccent, fontSize: 40, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: Colors.deepOrangeAccent, fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
