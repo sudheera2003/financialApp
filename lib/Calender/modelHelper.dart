@@ -7,24 +7,22 @@ import 'package:intl/intl.dart';
 import 'package:financial_app/data/local_database.dart';
 
 class ModalHelper {
-  // Fetch items dynamically from the ItemDatabase
   static List<String> getItems(String listType) {
     final db = ItemDatabase();
-    db.loadData(); // Ensure the latest data is loaded
+    db.loadData();
 
     switch (listType) {
       case "Income":
-        return db.inList; // Fetch income categories
+        return db.inList; 
       case "Expenses":
-        return db.itemList; // Fetch expense categories
+        return db.itemList;
       case "Account":
-        return ["Cash", "Accounts", "Card"]; // Hardcoded account types
+        return db.accountList;
       default:
         return [];
     }
   }
 
-  // Open a calendar modal for date selection
   static void openCalendar({
     required BuildContext context,
     required Function(DateTime) onDateSelected,
