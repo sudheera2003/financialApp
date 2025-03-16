@@ -4,6 +4,7 @@ import 'package:financial_app/pages/income_list.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/pages/currency_screen.dart';
 import 'package:financial_app/pages/account_type.dart';
+import 'package:financial_app/pages/feedback_page.dart';
 
 class More extends StatefulWidget {
   const More({super.key});
@@ -139,16 +140,24 @@ class _MoreState extends State<More> {
                 const SizedBox(
                   width: 30,
                 ),
-                Column(
-                  children: const [
-                    Icon(
-                      Icons.reviews,
-                      color: Colors.white,
-                      size: 35,
-                    ),
-                    Text('Feedback',
-                        style: TextStyle(color: Colors.white, fontSize: 20)),
-                  ],
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => FeedbackPage()),
+                    );
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.reviews,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                      Text('Feedback',
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ],
+                  ),
                 ),
               ],
             ),
