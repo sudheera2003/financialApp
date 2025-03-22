@@ -85,24 +85,26 @@ class ModalHelper {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Color.fromARGB(255, 76, 76, 78),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       builder: (context) {
         return SafeArea(
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.415,
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
+          child: SingleChildScrollView(
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.415,
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      topRight: Radius.circular(16),
+                    ),
                   ),
+                  child: CalculatorScreen(controller: controller),
                 ),
-                child: CalculatorScreen(controller: controller),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

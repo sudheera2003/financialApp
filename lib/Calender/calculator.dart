@@ -154,12 +154,12 @@ class CalculatorGrid extends StatelessWidget {
       child: InkWell(
         onTap: () => onKeyPressed(text),
         child: Material(
-          color: Colors.transparent, // Make the Material background transparent
+          color: const Color.fromARGB(255, 91, 91, 91), // Make the Material background transparent
           child: Container(
             height: 75,
             decoration: BoxDecoration(
-              color: isOKButton ? Colors.redAccent : Colors.black54,
-              border: Border.all(color: const Color.fromARGB(255, 255, 255, 255), width: 2),
+              color: isOKButton ? Colors.deepOrangeAccent : Colors.black54,
+              border: Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
             ),
             child: Center(
               child: text.isNotEmpty
