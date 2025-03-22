@@ -15,12 +15,25 @@ class ItemDatabase {
     itemList = [
       'Food',
       'Social life',
+      'Pets',
+      'Transport',
+      'Culture',
+      'Household',
+      'Apparel',
+      'Beauty',
+      'Health',
+      'Education',
+      'Gifts',
+      'other',
     ];
 
     // Default income categories
     inList = [
+      'Allowance',
       'Salary',
-      'Gifts',
+      'Petty cash',
+      'Bonus',
+      'other',
     ];
 
     // Default account types
