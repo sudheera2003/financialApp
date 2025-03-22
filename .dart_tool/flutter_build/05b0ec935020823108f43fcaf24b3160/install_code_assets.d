@@ -1,0 +1,1 @@
+ C:\\Users\\MSI\\Desktop\\financialApp\\.dart_tool\\flutter_build\\05b0ec935020823108f43fcaf24b3160\\native_assets.json: 

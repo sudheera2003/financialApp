@@ -1,4 +1,5 @@
-import 'package:financial_app/Calender/dailyDetails.dart';
+import 'package:financial_app/Calender/dailyView.dart';
+import 'package:financial_app/Calender/monthlyView.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/Calender/boxes.dart';
 import 'package:financial_app/Calender/mainForm.dart';
@@ -20,8 +21,8 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
   DateTime _selectedMonth = DateTime.now();
   final Set<DateTime> _selectedDays = {};
   final CalendarController _calendarController = CalendarController();
-  bool _showMonthPicker = false; // Track visibility of the month picker
-  int _selectedYear = DateTime.now().year; // Track the selected year
+  bool _showMonthPicker = false; 
+  int _selectedYear = DateTime.now().year; 
   late TabController _tabController;
   
 
@@ -30,6 +31,20 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
     super.initState();
     _calendarController.displayDate = _selectedMonth;
     _tabController = TabController(length: 3, vsync: this, initialIndex: widget.initialTab);
+    
+    // Add a listener to the TabController
+    _tabController.addListener(() {
+      print("Tab changed to index: ${_tabController.index}"); // Debugging
+      setState(() {}); // Force the UI to rebuild
+    });
+  }
+
+  @override
+  void dispose() {
+    // Remove the listener when the widget is disposed
+    _tabController.removeListener(() {});
+    _tabController.dispose();
+    super.dispose();
   }
 
   void _changeMonth(int increment) {
@@ -76,7 +91,6 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
     if (transactions.isNotEmpty) {
       double totalIncome = transactions.fold(0.0, (sum, txn) => sum + txn.amount);
 
-      // You can return a formatted string with the total income
       return totalIncome.toStringAsFixed(2); 
     } else {
       return '';
@@ -92,7 +106,6 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
     if (transactions.isNotEmpty) {
       double totalExpenses = transactions.fold(0.0, (sum, txn) => sum + txn.amount);
 
-      // You can return a formatted string with the total income
       return totalExpenses.toStringAsFixed(2); 
     } else {
       return '';
@@ -135,10 +148,45 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
     return income - expenses;
   }
 
+    double _calculateAnnualIncome(DateTime month) {
+    List<Transaction> transactions = boxTransactions.values
+        .cast<Transaction>()
+        .where((txn) =>
+            txn.date.year == month.year &&
+            txn.type == "Income")
+        .toList();
+    if(transactions.isNotEmpty){
+      return transactions.fold(0.0, (sum, txn) => sum + txn.amount);
+    }else{
+      return 0.00;
+    }
+  }
+
+  double _calculateAnnualExpenses(DateTime month) {
+    List<Transaction> transactions = boxTransactions.values
+        .cast<Transaction>()
+        .where((txn) =>
+            txn.date.year == month.year &&
+            txn.type == "Expenses")
+        .toList();
+
+    if(transactions.isNotEmpty){
+      return transactions.fold(0.0, (sum, txn) => sum + txn.amount);
+    }else{
+      return 0.00;
+    }
+  }
+
+  double _calculateAnnualNetTotal(DateTime month) {
+    double income = _calculateAnnualIncome(month);
+    double expenses = _calculateAnnualExpenses(month);
+    return income - expenses;
+  }
+
 
   void _toggleMonthPicker() {
     setState(() {
-      _showMonthPicker = !_showMonthPicker; // Toggle visibility
+      _showMonthPicker = !_showMonthPicker; 
     });
   }
 
@@ -148,17 +196,14 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
     });
   }
 
-  // Convert the list of Transaction objects to a list of maps
-  List<Map<String, dynamic>> _createList(DateTime month) {
+  List<Map<String, dynamic>> _createListForDailyView(DateTime month) {
   List<Transaction> transactions = boxTransactions.values
       .cast<Transaction>()
       .where((txn) =>
           txn.date.year == month.year &&
           txn.date.month == month.month)
       .toList();
-
-  // Debugging: Print the transactions for the selected month
-  print("Transactions for ${DateFormat('MMMM yyyy').format(month)}: $transactions");
+  transactions.sort((a, b) => b.date.compareTo(a.date));
 
   List<Map<String, dynamic>> transactionList = transactions.map((txn) {
     return {
@@ -173,36 +218,95 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
   return transactionList;
 }
 
+ List<Map<String, dynamic>> _createListForMonthlyView(DateTime month) {
+  List<Transaction> transactions = boxTransactions.values
+      .cast<Transaction>()
+      .where((txn) => txn.date.year == month.year)
+      .toList();
+
+  Map<int, Map<String, dynamic>> monthlyData = {};
+
+  for (int month = 1; month <= 12; month++) {
+    monthlyData[month] = {
+      'month': month,
+      'income': 0.0,
+      'expense': 0.0,
+    };
+  }
+
+  for (var txn in transactions) {
+    int month = txn.date.month;
+    if (txn.type == "Income") {
+      monthlyData[month]!['income'] += txn.amount;
+    } else if (txn.type == "Expenses") {
+      monthlyData[month]!['expense'] += txn.amount;
+    }
+  }
+
+  List<Map<String, dynamic>> transactionList = monthlyData.values.toList();
+
+  transactionList.sort((a, b) => a['month'].compareTo(b['month']));
+
+  return transactionList;
+}
+
   @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    backgroundColor: const Color.fromARGB(255, 49, 50, 56),
-    appBar: AppBar(
-      title: Text('Calender', style: TextStyle(color: Colors.white),),
-      centerTitle: true,
+  Widget build(BuildContext context) {
+    return Scaffold(
       backgroundColor: const Color.fromARGB(255, 49, 50, 56),
-    ),
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: Colors.redAccent,
-      shape: const CircleBorder(),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MainForm(initialTab: 1), // Example: Open 'Expenses' tab by default
-          ),
-        );
-      },
-      child: const Icon(Icons.add),
-    ),
-    body: Stack(
-      children: [
-        // Main Content (Header, Tabs, and Tab Views)
-        Column(
-          children: [
-            // Shared Header (Month/Year Name and Navigation Buttons)
-            GestureDetector(
-              onTap: _toggleMonthPicker, // Toggle month picker visibility
+      appBar: AppBar(
+        title: Text('Calender', style: TextStyle(color: Colors.white),),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.redAccent,
+        shape: const CircleBorder(),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainForm(initialTab: 1), 
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+      body: Stack(
+        children: [
+          
+          Column(
+            children: [
+              Visibility(
+                visible: _tabController.index != 2, // Hide for Monthly View tab
+                child: GestureDetector(
+                  onTap: _toggleMonthPicker, // Open month picker
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.chevron_left, color: Colors.white),
+                          onPressed: () => _changeMonth(-1), // Navigate to the previous month
+                        ),
+                        Text(
+                          DateFormat('MMMM yyyy').format(_selectedMonth), // Show full month and year
+                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.chevron_right, color: Colors.white),
+                          onPressed: () => _changeMonth(1), // Navigate to the next month
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+            // Widget for Monthly View Tab
+            Visibility(
+              visible: _tabController.index == 2, // Show only for Monthly View tab
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 child: Row(
@@ -210,31 +314,41 @@ Widget build(BuildContext context) {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.chevron_left, color: Colors.white),
-                      onPressed: () => _changeMonth(-1),
+                      onPressed: () {
+                        setState(() {
+                          _selectedMonth = DateTime(_selectedMonth.year - 1, 1); // Go to the previous year
+                          _calendarController.displayDate = _selectedMonth;
+                        });
+                      },
                     ),
                     Text(
-                      DateFormat('MMMM yyyy').format(_selectedMonth),
+                      DateFormat('yyyy').format(_selectedMonth), // Show only the year
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Colors.white),
                     ),
                     IconButton(
                       icon: const Icon(Icons.chevron_right, color: Colors.white),
-                      onPressed: () => _changeMonth(1),
+                      onPressed: () {
+                        setState(() {
+                          _selectedMonth = DateTime(_selectedMonth.year + 1, 1); // Go to the next year
+                          _calendarController.displayDate = _selectedMonth;
+                        });
+                      },
                     ),
                   ],
                 ),
               ),
             ),
 
-            // TabBar and TabBarView
+
             Expanded(
               child: DefaultTabController(
-                length: 3, // Number of tabs
+                length: 3, 
                 child: Column(
                   children: [
                     TabBar(
-                      controller: _tabController, // Use the explicit TabController
+                      controller: _tabController, 
                       labelColor: Colors.white,
-                      indicatorColor: Colors.blue,
+                      indicatorColor: Colors.deepOrangeAccent,
                       tabs: const [
                         Tab(text: "Daily View"),
                         Tab(text: "Calendar"),
@@ -243,7 +357,7 @@ Widget build(BuildContext context) {
                     ),
                     Expanded(
                       child: TabBarView(
-                        controller: _tabController, // Use the explicit TabController
+                        controller: _tabController, 
                         children: [
                           // Daily View
                           Column(
@@ -291,8 +405,8 @@ Widget build(BuildContext context) {
                               ),
                                   Divider(thickness: 1, height: 3, color: const Color.fromARGB(255, 112, 112, 112)),
                               Expanded(
-                                child: TransactionsPage(
-                                  transactions: _createList(_selectedMonth),
+                                child: DailyViewPage(
+                                  transactions: _createListForDailyView(_selectedMonth),
                                 ),
                               ),
                             ],
@@ -371,94 +485,94 @@ Widget build(BuildContext context) {
                                       },
                                       monthCellBuilder: (BuildContext context, MonthCellDetails details) {
                       
-                      // Get the first and last day of the current month
-                      DateTime firstDayOfMonth = DateTime(_selectedMonth.year, _selectedMonth.month, 1);
-                      DateTime lastDayOfMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0);
-          
-                      // Determine if the date is a leading or trailing date
-                      bool isLeadingDate = details.date.isBefore(firstDayOfMonth);
-                      bool isTrailingDate = details.date.isAfter(lastDayOfMonth);
-          
-                      // Determine background color based on date type
-                      Color backgroundColor;
-                      FontWeight fontWeight;
-                      if (isLeadingDate || isTrailingDate) {
-                        backgroundColor = const Color.fromARGB(255, 33, 34, 38); // Out-of-month dates
-                        fontWeight = FontWeight.w300;
-                      } else {
-                        backgroundColor = const Color.fromARGB(255, 49, 50, 56); // Current month dates
-                        fontWeight = FontWeight.w500;
-                      }
-          
-                      // Check if the current cell's date is today's date
-                      bool isToday = isSameDay(details.date, DateTime.now());
-          
-                      // Determine text color based on the day of the week
-                      Color textColor = Colors.white; // Default text color
-                      if (details.date.weekday == DateTime.saturday) {
-                        textColor = Colors.blue; // Saturday text color
-                      } else if (details.date.weekday == DateTime.sunday) {
-                        textColor = Colors.red; // Sunday text color
-                      }
-          
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: backgroundColor, // Set background color
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 0, 0, 0), // Border color
-                            width: 0.5, // Border width (adjust as needed)
-                          ),
-                        ),
-                        child: Stack(
-                          children: [
-                            // Date in the top-left corner
-                            Container(
-                              color: isToday ? const Color.fromARGB(255, 255, 255, 255) : Colors.transparent,
-                              child: Padding(
-                                padding: EdgeInsets.fromLTRB(8, 4, 0, 4), // Adjust the padding as needed
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      details.date.day.toString(),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: fontWeight,
-                                        color: isToday?Colors.black:textColor, // Use textColor for Saturday/Sunday
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-          
-                            // Income and Expense in the bottom-right corner
-                            Positioned(
-                              bottom: 7,
-                              right: 7,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    _incomeSet(details.date),
-                                    style: TextStyle(
-                                      color: const Color.fromARGB(255, 70, 111, 215), 
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                  Text(
-                                    _expensesSet(details.date),
-                                    style: TextStyle(
-                                      color: Colors.red, 
-                                      fontSize: 10,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                                        // Get the first and last day of the current month
+                                        DateTime firstDayOfMonth = DateTime(_selectedMonth.year, _selectedMonth.month, 1);
+                                        DateTime lastDayOfMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0);
+                            
+                                        // Determine if the date is a leading or trailing date
+                                        bool isLeadingDate = details.date.isBefore(firstDayOfMonth);
+                                        bool isTrailingDate = details.date.isAfter(lastDayOfMonth);
+                            
+                                        // Determine background color based on date type
+                                        Color backgroundColor;
+                                        FontWeight fontWeight;
+                                        if (isLeadingDate || isTrailingDate) {
+                                          backgroundColor = const Color.fromARGB(255, 33, 34, 38); // Out-of-month dates
+                                          fontWeight = FontWeight.w300;
+                                        } else {
+                                          backgroundColor = const Color.fromARGB(255, 49, 50, 56); // Current month dates
+                                          fontWeight = FontWeight.w500;
+                                        }
+                            
+                                        // Check if the current cell's date is today's date
+                                        bool isToday = isSameDay(details.date, DateTime.now());
+                            
+                                        // Determine text color based on the day of the week
+                                        Color textColor = Colors.white; // Default text color
+                                        if (details.date.weekday == DateTime.saturday) {
+                                          textColor = Colors.blue; // Saturday text color
+                                        } else if (details.date.weekday == DateTime.sunday) {
+                                          textColor = Colors.red; // Sunday text color
+                                        }
+                            
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                            color: backgroundColor, // Set background color
+                                            border: Border.all(
+                                              color: const Color.fromARGB(255, 0, 0, 0), // Border color
+                                              width: 0.5, // Border width (adjust as needed)
+                                            ),
+                                          ),
+                                          child: Stack(
+                                            children: [
+                                              // Date in the top-left corner
+                                              Container(
+                                                color: isToday ? const Color.fromARGB(255, 255, 255, 255) : Colors.transparent,
+                                                child: Padding(
+                                                  padding: EdgeInsets.fromLTRB(8, 4, 0, 4), // Adjust the padding as needed
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        details.date.day.toString(),
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: fontWeight,
+                                                          color: isToday?Colors.black:textColor, // Use textColor for Saturday/Sunday
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                            
+                                              // Income and Expense in the bottom-right corner
+                                              Positioned(
+                                                bottom: 7,
+                                                right: 7,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      _incomeSet(details.date),
+                                                      style: TextStyle(
+                                                        color: const Color.fromARGB(255, 70, 111, 215), 
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      _expensesSet(details.date),
+                                                      style: TextStyle(
+                                                        color: Colors.red, 
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
                                       monthViewSettings: MonthViewSettings(
                                         dayFormat: 'EEE',
                                         appointmentDisplayMode: MonthAppointmentDisplayMode.none,
@@ -472,8 +586,56 @@ Widget build(BuildContext context) {
                           ),
 
                           // Monthly View
-                          Center(
-                            child: Text("Monthly View Content", style: TextStyle(color: Colors.white)),
+                          Column(
+                            children: [
+                              // Calendar Header (Income, Expenses, Total)
+                              Container(
+                                color: const Color.fromARGB(255, 49, 50, 56),
+                                height: 60,
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          const Text("Income", style: TextStyle(color: Colors.white, fontSize: 16)),
+                                          Text(
+                                            _calculateAnnualIncome(_selectedMonth).toStringAsFixed(2),
+                                            style: const TextStyle(color: Colors.blue, fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          const Text("Exp.", style: TextStyle(color: Colors.white, fontSize: 16)),
+                                          Text(
+                                            _calculateAnnualExpenses(_selectedMonth).toStringAsFixed(2),
+                                            style: const TextStyle(color: Colors.red, fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: [
+                                          const Text("Total", style: TextStyle(color: Colors.white, fontSize: 16)),
+                                          Text(
+                                            _calculateAnnualNetTotal(_selectedMonth).toStringAsFixed(2),
+                                            style: const TextStyle(color: Colors.white, fontSize: 14),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                                  Divider(thickness: 1, height: 3, color: const Color.fromARGB(255, 112, 112, 112)),
+                              Expanded(
+                                child: MonthlyViewPage(
+                                  transactions: _createListForMonthlyView(_selectedMonth),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

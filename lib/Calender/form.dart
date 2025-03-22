@@ -117,6 +117,10 @@ class _FormScreenState extends State<FormScreen> {
                             context: context, controller: _controller_amount);
                       },
                       style: TextStyle(fontSize: 16, color: Colors.white),
+                      decoration: InputDecoration(
+                        prefixText: "Rs. ", // Add the "Rs." prefix here
+                        prefixStyle: TextStyle(fontSize: 16, color: Colors.white), // Style the prefix
+                      ),
                     ),
                   ),
                 ],

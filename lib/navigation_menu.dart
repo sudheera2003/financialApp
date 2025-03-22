@@ -1,6 +1,6 @@
 import 'package:financial_app/Calender/calanderPage.dart';
-import 'package:financial_app/menus/home.dart';
-import 'package:financial_app/menus/more.dart';
+import 'package:financial_app/accounts/account.dart';
+import 'package:financial_app/menus/more.dart';       
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:financial_app/stats/stats.dart';
@@ -35,7 +35,7 @@ class NavigationMenu extends StatelessWidget {
             destinations: [
               _buildNavItem(Icons.home, 'Home', controller.selectedIndex.value == 0),
               _buildNavItem(Icons.data_usage, 'Stats', controller.selectedIndex.value == 1),
-              _buildNavItem(Icons.calendar_month, 'Calander', controller.selectedIndex.value == 2),
+              _buildNavItem(Icons.wallet, 'Accounts', controller.selectedIndex.value == 2),
               _buildNavItem(Icons.more_horiz, 'More', controller.selectedIndex.value == 3),
             ],
           ),
@@ -62,7 +62,7 @@ class NavigationController extends GetxController {
   final screens = [
     const Calanderpage(),
     const Stats(),
-    const Home(),
+    const Account(),
     const More(),
     
   ];

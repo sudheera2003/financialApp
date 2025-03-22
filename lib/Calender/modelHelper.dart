@@ -24,33 +24,41 @@ class ModalHelper {
   }
 
   static void openCalendar({
-    required BuildContext context,
-    required Function(DateTime) onDateSelected,
-  }) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return SafeArea(
-          child: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.42,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
+  required BuildContext context,
+  required Function(DateTime) onDateSelected,
+}) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    builder: (context) {
+      return SafeArea(
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.42,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 49, 50, 56), // Dark background color
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16),
+                  topRight: Radius.circular(16),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    spreadRadius: 2,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                    ),
-                  ],
+                ],
+              ),
+              child: Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: ColorScheme.dark(
+                    primary: Colors.blue, // Header background color
+                    onPrimary: Colors.red, // Header text color
+                    onSurface: Colors.white, // Default text color
+                  ),
                 ),
                 child: CalendarDatePicker(
                   initialDate: DateTime.now(),
@@ -58,16 +66,16 @@ class ModalHelper {
                   lastDate: DateTime(2100),
                   onDateChanged: (selectedDate) {
                     onDateSelected(selectedDate);
-                    Navigator.pop(context);
                   },
                 ),
               ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
 
   // Open a calculator modal for amount input
   static void openCalculator({
@@ -77,7 +85,7 @@ class ModalHelper {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color.fromARGB(255, 76, 76, 78),
       builder: (context) {
         return SafeArea(
           child: Stack(
@@ -111,7 +119,7 @@ class ModalHelper {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 49, 50, 56),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -123,7 +131,7 @@ class ModalHelper {
             children: [
               const Text(
                 "Select an Option",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               const SizedBox(height: 10),
               Expanded(
@@ -131,8 +139,9 @@ class ModalHelper {
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return Card(
+                      color: Color(0xFF2A2A2A),
                       child: ListTile(
-                        title: Text(items[index]),
+                        title: Text(items[index], style: TextStyle(color: Colors.white),),
                         onTap: () {
                           controller.text = items[index];
                           Navigator.pop(context);
