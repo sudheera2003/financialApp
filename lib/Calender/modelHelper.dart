@@ -93,7 +93,7 @@ class ModalHelper {
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.415,
+                  height: MediaQuery.of(context).size.height * 0.430,
                   decoration: const BoxDecoration(
                     color: Colors.transparent,
                     borderRadius: BorderRadius.only(
@@ -170,6 +170,7 @@ class ModalHelper {
     DateTime date = selectedDate; // Initialize `date` with `selectedDate`
 
     await showModalBottomSheet(
+      backgroundColor: Color.fromARGB(255, 49, 50, 56),
       context: context,
       isScrollControlled: true,
       isDismissible: true,
@@ -185,15 +186,68 @@ class ModalHelper {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "Transactions on ${DateFormat.yMMMd().format(selectedDate)}",
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          "${selectedDate.day}".padLeft(2, '0'),
+                          style: const TextStyle(
+                            fontSize: 27,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                          Text(
+                          formatYearMonth(selectedDate),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                            Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: _getDayColor(selectedDate.weekday),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            _getWeekday(selectedDate.weekday),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                          ],
+                        )
+                      ],
+                    ),
+                    // Row(
+                    //   children: [
+                    //     Text(
+                    //       'Income: Rs. 0',
+                    //       style: const TextStyle(color: Colors.blue),
+                    //     ),
+                    //     SizedBox(width: 10,),
+                    //     Text(
+                    //       'Expense: Rs. 0',
+                    //       style: const TextStyle(color: Colors.red),
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                ),
+                  const Divider(color: Colors.grey),
                   transactions.isEmpty
                       ? SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.510,
+                          height: MediaQuery.of(context).size.height * 0.520,
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -201,7 +255,7 @@ class ModalHelper {
                                 const Icon(Icons.info_outline, size: 50, color: Colors.grey),
                                 const SizedBox(height: 10),
                                 const Text(
-                                  "No transactions for this date",
+                                  "No data available",
                                   style: TextStyle(fontSize: 16, color: Colors.grey),
                                 ),
                               ],
@@ -209,21 +263,20 @@ class ModalHelper {
                           ),
                         )
                       : SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.510,
+                          height: MediaQuery.of(context).size.height * 0.520,
                           child: ListView.builder(
                             shrinkWrap: true,
                             itemCount: transactions.length,
                             itemBuilder: (context, index) {
                               final txn = transactions[index];
                               return ListTile(
-                                leading: const Icon(Icons.category, color: Colors.blue),
-                                title: Text(txn.category),
-                                subtitle: Text(txn.accountType),
+                                title: Text(txn.category ,style: TextStyle(color: Colors.white)),
+                                subtitle: Text(txn.accountType ,style: TextStyle(fontSize: 12, color: Colors.white)),
                                 trailing: Text(
                                   "Rs. ${txn.amount.toStringAsFixed(2)}",
                                   style: TextStyle(
                                     color: txn.amount > 0 && txn.type == "Income"
-                                        ? Colors.green
+                                        ? Colors.blue
                                         : Colors.red,
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -266,5 +319,40 @@ class ModalHelper {
         onClose();
       }
     });
+  }
+}
+
+String formatYearMonth(DateTime date) {
+  return DateFormat('yyyy-MM').format(date); // "2023-05"
+}
+
+String _getWeekday(int weekday) {
+    switch (weekday) {
+      case 1:
+        return 'Mon';
+      case 2:
+        return 'Tue';
+      case 3:
+        return 'Wed';
+      case 4:
+        return 'Thu';
+      case 5:
+        return 'Fri';
+      case 6:
+        return 'Sat';
+      case 7:
+        return 'Sun';
+      default:
+        return '';
+    }
+  }
+
+  Color _getDayColor(int weekday) {
+  if (weekday == 6) {
+    return Colors.blue; 
+  } else if (weekday == 7) {
+    return Colors.red; 
+  } else {
+    return Color.fromARGB(255, 156, 156, 156); 
   }
 }
