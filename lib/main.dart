@@ -1,5 +1,6 @@
 import 'package:financial_app/Calender/boxes.dart';
 import 'package:financial_app/Calender/transaction.dart';
+import 'package:financial_app/app_lock/app_lock_gate.dart';
 import 'package:financial_app/navigation_menu.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
       ),
-      home: const NavigationMenu(),
+      home: AppLockGate(child: NavigationMenu()),
     );
   }
 }

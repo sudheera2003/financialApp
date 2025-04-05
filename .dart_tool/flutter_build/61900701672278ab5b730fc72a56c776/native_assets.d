@@ -1,0 +1,1 @@
+ C:\\Users\\sudhe\\Documents\\VSCODE\\Projects\\financialApp\\.dart_tool\\flutter_build\\61900701672278ab5b730fc72a56c776\\native_assets.yaml: 
