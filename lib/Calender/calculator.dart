@@ -158,7 +158,7 @@ class CalculatorGrid extends StatelessWidget {
           child: Container(
             height: 75,
             decoration: BoxDecoration(
-              color: isOKButton ? Colors.deepOrangeAccent : Colors.black54,
+              color: isOKButton ? Color(0xFF7C4DFF) : Colors.black54,
               border: Border.all(color: const Color.fromARGB(255, 0, 0, 0), width: 2),
             ),
             child: Center(

@@ -70,7 +70,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Color(0xFF7C4DFF),
         foregroundColor: Colors.white,
         automaticallyImplyLeading: true,
       ),
@@ -147,7 +147,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                 min: 1,
                 max: 5,
                 divisions: 4,
-                activeColor: Colors.deepOrangeAccent,
+                activeColor: Color(0xFF7C4DFF),
                 inactiveColor: Colors.grey,
                 label: _rating.round().toString(),
                 onChanged: (value) {
@@ -174,11 +174,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
               ),
               SizedBox(height: 20),
               _isLoading
-                  ? CircularProgressIndicator(color: Colors.deepOrangeAccent)
+                  ? CircularProgressIndicator(color: Color(0xFF7C4DFF))
                   : ElevatedButton(
                       onPressed: _sendFeedback,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrangeAccent,
+                        backgroundColor: Color(0xFF7C4DFF),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

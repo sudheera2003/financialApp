@@ -77,7 +77,7 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Date", style: TextStyle(fontSize: 16,color: Colors.white))),
+                      child: Text("Date", style: TextStyle(fontSize: 14,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
@@ -106,7 +106,7 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Amount", style: TextStyle(fontSize: 16,color: Colors.white))),
+                      child: Text("Amount", style: TextStyle(fontSize: 14,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
@@ -132,7 +132,7 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Category", style: TextStyle(fontSize: 16,color: Colors.white))),
+                      child: Text("Category", style: TextStyle(fontSize: 14,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
@@ -160,7 +160,7 @@ class _FormScreenState extends State<FormScreen> {
                 children: [
                   SizedBox(
                       width: 70,
-                      child: Text("Account", style: TextStyle(fontSize: 16,color: Colors.white))),
+                      child: Text("Account", style: TextStyle(fontSize: 14,color: Colors.white))),
                   SizedBox(width: 20),
                   Expanded(
                     child: TextField(
@@ -291,14 +291,14 @@ class _FormScreenState extends State<FormScreen> {
                           : clearForm, // Clear the form if creating a new transaction
                       style: ElevatedButton.styleFrom(
                         backgroundColor: widget.transaction != null
-                            ? Colors.deepOrangeAccent
-                            : Colors.deepOrangeAccent,
+                            ? Color(0xFF7C4DFF)
+                            : Color(0xFF7C4DFF),
                         foregroundColor: widget.transaction != null
                             ? Colors.white
                             : const Color.fromARGB(255, 255, 255, 255),
                         elevation: widget.transaction != null ? 2 : 0,
                         shadowColor: widget.transaction != null
-                            ? Colors.deepOrangeAccent
+                            ? Color(0xFF7C4DFF)
                             : Colors.transparent,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),

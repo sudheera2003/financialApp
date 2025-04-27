@@ -129,7 +129,7 @@ class _BudgetAddState extends State<BudgetAdd> {
                       Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrangeAccent
+                      backgroundColor: Color(0xFF7C4DFF)
                     ),
                     child: const Text('Cancel',style: TextStyle(color: Colors.white)),
                   ),

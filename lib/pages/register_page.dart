@@ -40,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
       barrierDismissible: false,
       builder: (context) {
         return const Center(
-          child: CircularProgressIndicator(color: Colors.deepOrangeAccent),
+          child: CircularProgressIndicator(color: Color(0xFF7C4DFF)),
         );
       },
     );
@@ -249,7 +249,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         onTap: widget.onTap,
                         child: Text(
                           'Login now',
-                          style: TextStyle(color: Colors.deepOrangeAccent),
+                          style: TextStyle(color: Color(0xFF7C4DFF)),
                         ),
                       ),
                     ],

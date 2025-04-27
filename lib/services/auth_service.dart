@@ -10,7 +10,7 @@ class AuthService {
         context: context,
         barrierDismissible: false,
         builder: (context) {
-          return const Center(child: CircularProgressIndicator(color: Colors.deepOrangeAccent));
+          return const Center(child: CircularProgressIndicator(color: Color(0xFF7C4DFF)));
         },
       );
 

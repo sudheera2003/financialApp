@@ -77,7 +77,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 49, 50, 56),
       appBar: AppBar(
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Color(0xFF7C4DFF),
         elevation: 0,
         foregroundColor: Colors.white,
         title: const Text("Currency Converter"),
@@ -196,7 +196,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                       const SizedBox(height: 10),
                       Text(
                         total.toStringAsFixed(2),
-                        style: const TextStyle(color: Colors.deepOrangeAccent, fontSize: 40, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: Color(0xFF7C4DFF), fontSize: 40, fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),

@@ -60,7 +60,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.deepOrangeAccent,
+            backgroundColor: Color(0xFF7C4DFF),
             foregroundColor: Colors.white,
           ),
           backgroundColor: const Color.fromARGB(255, 27, 27, 29),
@@ -91,7 +91,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       padding: const EdgeInsets.all(15),
                       margin: const EdgeInsets.symmetric(horizontal: 100),
                       decoration: BoxDecoration(
-                        color: Colors.deepOrangeAccent,
+                        color: Color(0xFF7C4DFF),
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: const Center(

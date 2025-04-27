@@ -70,7 +70,7 @@ class _AccountListState extends State<AccountList> {
           ),
           const SizedBox(width: 20),
         ],
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Color(0xFF7C4DFF),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),

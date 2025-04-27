@@ -1,5 +1,7 @@
 import 'package:financial_app/Calender/dailyView.dart';
 import 'package:financial_app/Calender/monthlyView.dart';
+import 'package:financial_app/dashboard_page.dart';
+import 'package:financial_app/navigation_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/Calender/boxes.dart';
 import 'package:financial_app/Calender/mainForm.dart';
@@ -50,6 +52,7 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
   void _changeMonth(int increment) {
     setState(() {
       _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + increment, 1);
+      _selectedYear = _selectedMonth.year;
       _calendarController.displayDate = _selectedMonth;
     });
   }
@@ -258,9 +261,23 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
         title: Text('Calender', style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+        automaticallyImplyLeading: false, // Disable default back arrow
+        leading: 
+          IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white,), // You can use any icon
+            onPressed: () {
+              // Navigate wherever you want
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const NavigationMenu()),
+                (route) => false,
+              );
+              // or Navigator.pop(context); or any custom function
+            },
+          ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Color(0xFF7C4DFF),
         shape: const CircleBorder(),
         onPressed: () {
           Navigator.push(
@@ -348,7 +365,7 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
                     TabBar(
                       controller: _tabController, 
                       labelColor: Colors.white,
-                      indicatorColor: Colors.deepOrangeAccent,
+                      indicatorColor: Color(0xFF7C4DFF),
                       tabs: const [
                         Tab(text: "Daily View"),
                         Tab(text: "Calendar"),

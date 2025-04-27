@@ -71,7 +71,7 @@ class _IncomeListState extends State<IncomeList> {
           IconButton(onPressed: createNewItem, icon: Icon(Icons.playlist_add,size: 27,)),
           SizedBox(width: 20,),
         ],
-        backgroundColor: Colors.deepOrangeAccent,
+        backgroundColor: Color(0xFF7C4DFF),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),

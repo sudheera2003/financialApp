@@ -90,7 +90,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             TabBar(
               controller: tabController,
-              indicatorColor: Colors.deepOrangeAccent,
+              indicatorColor: Color(0xFF7C4DFF),
               labelColor: Colors.white,
               tabs: const [
                 Tab(text: 'Income'),
@@ -146,10 +146,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: currentPageIndex == index ? Colors.deepOrangeAccent : Colors.transparent,
+          color: currentPageIndex == index ? Color(0xFF7C4DFF) : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: currentPageIndex == index ? Colors.deepOrangeAccent : Colors.white,
+            color: currentPageIndex == index ? Color(0xFF7C4DFF) : Colors.white,
             width: 1,
           ),
         ),

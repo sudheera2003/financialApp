@@ -40,10 +40,10 @@ class _InputDialogBoxState extends State<InputDialogBox> {
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrangeAccent),
+                    borderSide: BorderSide(color: Color(0xFF7C4DFF)),
                   ),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepOrangeAccent),
+                    borderSide: BorderSide(color: Color(0xFF7C4DFF)),
                   ),
                 ),
               ),
@@ -57,7 +57,7 @@ class _InputDialogBoxState extends State<InputDialogBox> {
                       widget.controller.clear();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrangeAccent,
+                      backgroundColor: Color(0xFF7C4DFF),
                       foregroundColor: Colors.white,
                     ),
                     child: const Text('Cancel'),
@@ -66,7 +66,7 @@ class _InputDialogBoxState extends State<InputDialogBox> {
                   ElevatedButton(
                     onPressed: widget.onSave,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrangeAccent,
+                      backgroundColor: Color(0xFF7C4DFF),
                       foregroundColor: Colors.white,
                     ),
                     child: const Text('Save'),

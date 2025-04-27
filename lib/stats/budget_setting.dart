@@ -224,7 +224,7 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
                   Tab(text: 'Income'),
                   Tab(text: 'Expenses'),
                 ],
-                indicatorColor: Colors.deepOrangeAccent,
+                indicatorColor: Color(0xFF7C4DFF),
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.grey,
               ),

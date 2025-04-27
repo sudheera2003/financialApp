@@ -7,6 +7,21 @@ class DailyViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (transactions.isEmpty) {
+    return  Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.info_outline, size: 50, color: Colors.grey),
+            const SizedBox(height: 10),
+            const Text(
+              "No data available",
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+  }
     // Group transactions by date
     Map<String, List<Map<String, dynamic>>> groupedTransactions = {};
     for (var transaction in transactions) {

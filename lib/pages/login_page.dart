@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
     context: context,
     barrierDismissible: false,
     builder: (context) {
-      return const Center(child: CircularProgressIndicator(color: Colors.deepOrangeAccent,));
+      return const Center(child: CircularProgressIndicator(color: Color(0xFF7C4DFF),));
     },
   );
 
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: Text('Forget Password ?', 
-                          style: TextStyle(color: Colors.deepOrangeAccent, fontSize:15)
+                          style: TextStyle(color: Color(0xFF7C4DFF), fontSize:15)
                           )
                         ),
                       ],
@@ -207,7 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(width: 5,),
                       GestureDetector(
                         onTap: widget.onTap,
-                        child: Text('Register now',style:TextStyle(color: Colors.deepOrangeAccent),)
+                        child: Text('Register now',style:TextStyle(color: Color(0xFF7C4DFF)),)
                         ),
                     ],
                   )

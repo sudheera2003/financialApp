@@ -39,7 +39,7 @@ class _MainFormState extends State<MainForm> with SingleTickerProviderStateMixin
         backgroundColor: const Color.fromARGB(255, 49, 50, 56),
         title: Text(title,style: TextStyle(color: Colors.white)), // Dynamic title based on selected tab
         bottom: TabBar(
-          indicatorColor: Colors.deepOrangeAccent,
+          indicatorColor: Color(0xFF7C4DFF),
           labelColor: Colors.white,
           controller: _tabController, // Attach the controller
           tabs: const [

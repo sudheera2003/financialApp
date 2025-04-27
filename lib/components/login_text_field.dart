@@ -42,7 +42,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
             borderSide: BorderSide(color: widget.borderColor), // =border color
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepOrangeAccent), // Change focus color
+            borderSide: BorderSide(color: Color(0xFF7C4DFF)), // Change focus color
           ),
           hintText: widget.hintText,
           hintStyle: TextStyle(color: Colors.grey.shade400), // Hint text color
@@ -50,7 +50,7 @@ class _LoginTextFieldState extends State<LoginTextField> {
               ? IconButton(
                   icon: Icon(
                     _isObscured ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.deepOrangeAccent, // Change icon color
+                    color: Color(0xFF7C4DFF), // Change icon color
                   ),
                   onPressed: () {
                     setState(() {

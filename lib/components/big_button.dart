@@ -20,7 +20,7 @@ class _BigButtonState extends State<BigButton> {
         padding: EdgeInsets.all(15),
         margin: EdgeInsets.symmetric(horizontal: 100),
         decoration: BoxDecoration(
-          color: Colors.deepOrangeAccent,
+          color: Color(0xFF7C4DFF),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Center(
