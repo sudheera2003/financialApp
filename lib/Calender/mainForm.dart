@@ -36,6 +36,7 @@ class _MainFormState extends State<MainForm> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Color.fromARGB(255, 255, 255, 255),),
         backgroundColor: const Color.fromARGB(255, 49, 50, 56),
         title: Text(title,style: TextStyle(color: Colors.white)), // Dynamic title based on selected tab
         bottom: TabBar(

@@ -1,5 +1,6 @@
 import 'package:financial_app/Calender/boxes.dart';
 import 'package:financial_app/Calender/calander.dart';
+import 'package:financial_app/Calender/mainForm.dart';
 import 'package:financial_app/Calender/transaction.dart';
 import 'package:financial_app/stats/stats.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,20 @@ class DashboardPage extends StatelessWidget {
     List<Transaction> recentFive = transactions.take(5).toList();
     final String currentMonthName = DateFormat('MMMM').format(today);
     return Scaffold(
-      backgroundColor: const Color(0xFF1C1C1E), // Manually set dark background
+      backgroundColor: const Color(0xFF1C1C1E),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF7C4DFF),
+        shape: const CircleBorder(),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainForm(initialTab: 1), 
+            ),
+          );
+        },
+        child: const Icon(Icons.add, color: Colors.white,),
+      ), // Manually set dark background
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16),

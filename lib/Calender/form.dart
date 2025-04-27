@@ -264,7 +264,7 @@ class _FormScreenState extends State<FormScreen> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 29, 29, 29),
+                        backgroundColor: Color(0xFF7C4DFF),
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
@@ -291,14 +291,14 @@ class _FormScreenState extends State<FormScreen> {
                           : clearForm, // Clear the form if creating a new transaction
                       style: ElevatedButton.styleFrom(
                         backgroundColor: widget.transaction != null
-                            ? Color(0xFF7C4DFF)
-                            : Color(0xFF7C4DFF),
+                            ? Color.fromARGB(255, 29, 29, 29)
+                            : Color.fromARGB(255, 29, 29, 29),
                         foregroundColor: widget.transaction != null
                             ? Colors.white
                             : const Color.fromARGB(255, 255, 255, 255),
                         elevation: widget.transaction != null ? 2 : 0,
                         shadowColor: widget.transaction != null
-                            ? Color(0xFF7C4DFF)
+                            ? Color.fromARGB(255, 29, 29, 29)
                             : Colors.transparent,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),

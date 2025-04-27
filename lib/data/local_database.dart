@@ -48,11 +48,18 @@ class ItemDatabase {
   }
 
   // Load data from Hive
-  void loadData() {
+void loadData() {
+  if (_mybox.get("ITEMLIST") == null || _mybox.get("INLIST") == null || _mybox.get("ACCOUNTLIST") == null) {
+    // First time ever opening the app
+    createInitialData();
+  } else {
+    // Data already exists
     itemList = _mybox.get("ITEMLIST", defaultValue: []).cast<String>();
     inList = _mybox.get("INLIST", defaultValue: []).cast<String>();
     accountList = _mybox.get("ACCOUNTLIST", defaultValue: []).cast<String>();
   }
+}
+
 
   // Update the database with current lists
   void updateDatabase() {

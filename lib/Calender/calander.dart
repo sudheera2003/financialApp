@@ -258,6 +258,7 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 49, 50, 56),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Color.fromARGB(255, 255, 255, 255),),
         title: Text('Calender', style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 49, 50, 56),
@@ -287,7 +288,7 @@ class _ComplexTableState extends State<ComplexTable> with SingleTickerProviderSt
             ),
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white,),
       ),
       body: Stack(
         children: [
