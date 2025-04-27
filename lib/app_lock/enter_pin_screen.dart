@@ -72,7 +72,7 @@ class _EnterPinScreenState extends State<EnterPinScreen> {
                 height: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: index < _enteredPin.length ? Colors.blue : Colors.grey,
+                  color: index < _enteredPin.length ? Color(0xFF7C4DFF) : Colors.grey,
                 ),
               );
             }),
@@ -103,7 +103,7 @@ class _EnterPinScreenState extends State<EnterPinScreen> {
                 );
               }
             },
-            child: const Text('Use Biometric Instead', style: TextStyle(color: Colors.blue)),
+            child: const Text('Use Biometric Instead', style: TextStyle(color: Color(0xFF7C4DFF))),
           ),
         ],
       ),

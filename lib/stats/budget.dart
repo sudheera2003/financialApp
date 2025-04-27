@@ -135,7 +135,7 @@ class _BudgetState extends State<Budget> {
     final transactionType = _selectedTabIndex == 0 ? "Income" : "Expenses";
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+      backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

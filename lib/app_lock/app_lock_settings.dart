@@ -132,8 +132,9 @@ class _AppLockSettingsState extends State<AppLockSettings> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 255, 255, 255),),
         title: const Text('App Lock Settings', style: TextStyle(color: Colors.white)),
-        backgroundColor: const Color.fromARGB(255, 27, 27, 29),
+        backgroundColor: const Color(0xFF7C4DFF),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -143,14 +144,14 @@ class _AppLockSettingsState extends State<AppLockSettings> {
               title: const Text('Enable PIN', style: TextStyle(color: Colors.white)),
               value: _isPinEnabled,
               onChanged: _togglePin,
-              activeColor: Colors.blue,
+              activeColor: const Color(0xFF7C4DFF),
             ),
             if (_isBiometricAvailable)
               SwitchListTile(
                 title: const Text('Enable Biometric', style: TextStyle(color: Colors.white)),
                 value: _isBiometricEnabled,
                 onChanged: _toggleBiometric,
-                activeColor: Colors.blue,
+                activeColor: const Color(0xFF7C4DFF),
               ),
             if (_isPinEnabled)
               ListTile(

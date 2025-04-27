@@ -164,14 +164,14 @@ class _StatsState extends State<Stats> with SingleTickerProviderStateMixin {
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            dialogBackgroundColor: const Color.fromARGB(255, 49, 50, 56),
+            dialogBackgroundColor: const Color.fromARGB(255, 27, 27, 29),
             textTheme: TextTheme(
               bodyMedium: TextStyle(color: Colors.white),
             ),
             colorScheme: ColorScheme.dark(
               primary: Colors.red,
               onPrimary: Colors.white,
-              surface: const Color.fromARGB(255, 49, 50, 56),
+              surface: const Color.fromARGB(255, 27, 27, 29),
               onSurface: Colors.white,
             ),
             textButtonTheme: TextButtonThemeData(
@@ -205,7 +205,7 @@ class _StatsState extends State<Stats> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+      backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       appBar: CustomAppBar(
         selectedPeriod: selectedPeriod,
         selectedMonth: _selectedMonth,

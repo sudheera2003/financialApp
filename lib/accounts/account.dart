@@ -33,14 +33,14 @@ class _AccountState extends State<Account> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:const Color.fromARGB(255, 49, 50, 56),
+      backgroundColor:const Color.fromARGB(255, 27, 27, 29),
       appBar: AppBar(
         title: Text('Accounts', style: TextStyle(color: Colors.white)),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+        backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       ),
       body: Container(
-        color: const Color.fromARGB(255, 49, 50, 56),
+        color: const Color.fromARGB(255, 27, 27, 29),
         child: Stack(
           children: [
             Column(

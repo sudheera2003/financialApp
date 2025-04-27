@@ -134,14 +134,14 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
       builder: (BuildContext context, Widget? child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            dialogBackgroundColor: const Color.fromARGB(255, 49, 50, 56),
+            dialogBackgroundColor: const Color.fromARGB(255, 27, 27, 29),
             textTheme: TextTheme(
               bodyMedium: TextStyle(color: Colors.white),
             ),
             colorScheme: ColorScheme.dark(
               primary: Colors.red,
               onPrimary: Colors.white,
-              surface: const Color.fromARGB(255, 49, 50, 56),
+              surface: const Color.fromARGB(255, 27, 27, 29),
               onSurface: Colors.white,
             ),
             textButtonTheme: TextButtonThemeData(
@@ -177,9 +177,10 @@ class _BudgetSettingState extends State<BudgetSetting> with SingleTickerProvider
     final expenses = ModalHelper.getItems("Expenses");
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+      backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+        iconTheme: IconThemeData(color: const Color.fromARGB(255, 255, 255, 255),),
+        backgroundColor: const Color.fromARGB(255, 27, 27, 29),
         title: const Text('Budget Setting',style: TextStyle(color: Colors.white),),
         bottom: PreferredSize(
           preferredSize: Size.fromHeight(100),

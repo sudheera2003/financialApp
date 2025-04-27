@@ -77,7 +77,7 @@ class _SetPinScreenState extends State<SetPinScreen> {
                 height: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: index < _enteredPin.length ? Colors.blue : Colors.grey,
+                  color: index < _enteredPin.length ? Color(0xFF7C4DFF) : Colors.grey,
                 ),
               );
             }),

@@ -121,7 +121,7 @@ class _ChangePinScreenState extends State<ChangePinScreen> {
                 height: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: index < _displayPin.length ? Colors.blue : Colors.grey,
+                  color: index < _displayPin.length ? Color(0xFF7C4DFF) : Colors.grey,
                 ),
               );
             }),

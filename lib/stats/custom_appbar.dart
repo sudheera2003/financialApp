@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color.fromARGB(255, 49, 50, 56),
+      backgroundColor: const Color.fromARGB(255, 27, 27, 29),
       title: Row(
         children: [
           _buildNavButton(context, 'Stats', 0),

@@ -210,12 +210,12 @@ class __BiometricAuthState extends State<_BiometricAuth> {
           ],
           TextButton(
             onPressed: widget.onSwitchToPin,
-            child: const Text('Use PIN Instead', style: TextStyle(color: Colors.blue)),
+            child: const Text('Use PIN Instead', style: TextStyle(color: Color(0xFF7C4DFF),)),
           ),
           if (!_isAuthenticating && _errorMessage != null)
             TextButton(
               onPressed: _authenticate,
-              child: const Text('Try Again', style: TextStyle(color: Colors.blue)),
+              child: const Text('Try Again', style: TextStyle(color: Color(0xFF7C4DFF),)),
             ),
         ],
       ),
@@ -300,7 +300,7 @@ class _PinAuthScreenState extends State<PinAuthScreen> {
                 height: 20,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: index < _enteredPin.length ? Colors.blue : Colors.grey,
+                  color: index < _enteredPin.length ? Color(0xFF7C4DFF) : Colors.grey,
                 ),
               );
             }),
@@ -318,7 +318,7 @@ class _PinAuthScreenState extends State<PinAuthScreen> {
           if (widget.canUseBiometric)
             TextButton(
               onPressed: widget.onSwitchToBiometric,
-              child: const Text('Use Biometric Instead', style: TextStyle(color: Colors.blue)),
+              child: const Text('Use Biometric Instead', style: TextStyle(color: Color(0xFF7C4DFF))),
             ),
         ],
       ),
