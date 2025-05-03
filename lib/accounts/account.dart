@@ -1,3 +1,4 @@
+import 'package:financial_app/export_excel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:financial_app/accounts/accCard.dart';
@@ -71,6 +72,21 @@ class _AccountState extends State<Account> {
             Expanded(
               child: AccCard(selectedMonth: _selectedMonth), 
             ),
+            SizedBox(
+                    width: 220,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _showExportOptions(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF7C4DFF),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      child: Text("Export Data"),
+                    )
+            )
           ],
         ),
         if (_showMonthPicker)
@@ -153,4 +169,39 @@ class _AccountState extends State<Account> {
       ),
     );
   }
+
+    void _showExportOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color.fromARGB(255, 56, 56, 56),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+      ),
+      builder: (_) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.calendar_month, color: Colors.white),
+              title: Text("Export Selected Month", style: TextStyle(color: Colors.white)),
+              onTap: () {
+                Navigator.pop(context);
+                exportToExcel(filterType: 'month', selectedDate: _selectedMonth, context: context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.date_range, color: Colors.white),
+              title: Text("Export Selected Year", style: TextStyle(color: Colors.white)),
+              onTap: () {
+                Navigator.pop(context);
+                exportToExcel(filterType: 'year', selectedDate: DateTime(_selectedYear), context: context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
+
