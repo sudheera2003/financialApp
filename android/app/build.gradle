@@ -11,13 +11,12 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-        coreLibraryDesugaringEnabled true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     defaultConfig {
@@ -41,7 +40,7 @@ flutter {
 
 dependencies {
     implementation 'com.google.firebase:firebase-analytics' 
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
+    // Other Firebase dependencies
 }
 
-apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'  // Apply the plugin here
