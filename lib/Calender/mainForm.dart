@@ -11,7 +11,7 @@ class MainForm extends StatefulWidget {
 
 class _MainFormState extends State<MainForm> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  String title = "Expenses"; // Default title
+  String title = "Income"; // Default title
 
   @override
   void initState() {
