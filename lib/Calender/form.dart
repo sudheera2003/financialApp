@@ -1,8 +1,10 @@
+import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/Calender/boxes.dart';
 import 'package:financial_app/Calender/calander.dart';
 import 'package:financial_app/Calender/transaction.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'modelHelper.dart';
 
 class FormScreen extends StatefulWidget {
@@ -188,7 +190,7 @@ class _FormScreenState extends State<FormScreen> {
                   SizedBox(
                     width: 220,
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_controller_date.text.isEmpty ||
                             _controller_amount.text.isEmpty ||
                             _controller_category.text.isEmpty ||
@@ -245,6 +247,49 @@ class _FormScreenState extends State<FormScreen> {
                                     Text('Transaction saved successfully!')),
                           );
                           
+                          final selectedDate = DateFormat.yMMMd().parse(_controller_date.text);
+                          final selectedMonth = DateTime(selectedDate.year, selectedDate.month);
+                          final category = _controller_category.text;
+                          final transactionType = type;
+
+                          // Generate budget key (e.g., Monthly)
+                          String periodKey = '${selectedMonth.year}_${selectedMonth.month}';
+                          double monthlyBudget = await getBudgetAmount(periodKey, category);
+
+                          // Calculate total spent
+                          double totalSpent = 0;
+                          for (var txn in boxTransactions.values) {
+                            if (txn.type == transactionType &&
+                                txn.category == category &&
+                                txn.date.year == selectedMonth.year &&
+                                txn.date.month == selectedMonth.month) {
+                              totalSpent += txn.amount;
+                            }
+                          }
+
+                          // Show notification
+                          String title = "Budget Update";
+                          String body;
+
+                          if (monthlyBudget == 0) {
+                            body = "No budget set for $category this month.";
+                          } else if (totalSpent >= monthlyBudget) {
+                            body = "You’ve exceeded your Rs. ${monthlyBudget.toStringAsFixed(2)} budget for $category this month.";
+                          } else if (totalSpent >= monthlyBudget * 0.8) {
+                            body = "You’ve used 80% of your Rs. ${monthlyBudget.toStringAsFixed(2)} budget for $category this month.";
+                          } else if (totalSpent >= monthlyBudget * 0.5) {
+                            body = "You’ve used 50% of your Rs. ${monthlyBudget.toStringAsFixed(2)} budget for $category this month.";
+                          } else {
+                            final remaining = (monthlyBudget - totalSpent).toStringAsFixed(2);
+                            body = "Rs. $remaining remaining in $category for this month.";
+                          }
+
+                          NotificationService().showNotification(
+                            title: title,
+                            body: body,
+                          );
+
+                  
                          if(widget.transaction == null){
                             Navigator.pushAndRemoveUntil(
                               context,
@@ -319,4 +364,10 @@ class _FormScreenState extends State<FormScreen> {
       ),
     );
   }
+}
+
+Future<double> getBudgetAmount(String periodKey, String category) async {
+  final prefs = await SharedPreferences.getInstance();
+  String budgetKey = 'budget_${periodKey}_$category';
+  return prefs.getDouble(budgetKey) ?? 0.0;
 }

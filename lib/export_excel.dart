@@ -21,7 +21,8 @@ Future<void> exportToExcel({
 
   // Create a new Excel workbook
   final Workbook workbook = Workbook();
-  
+  final Style amountStyle = workbook.styles.add('AmountStyle');
+  amountStyle.numberFormat = '#,##0.00';
   // Add transactions sheet (default name is Sheet1)
   final Worksheet transactionsSheet = workbook.worksheets[0];
   // Rename the worksheet
@@ -46,7 +47,9 @@ Future<void> exportToExcel({
     final txn = filteredTransactions[i];
     transactionsSheet.getRangeByIndex(i + 2, 1).setText(DateFormat('yyyy-MM-dd').format(txn.date));
     transactionsSheet.getRangeByIndex(i + 2, 2).setText(txn.type);
-    transactionsSheet.getRangeByIndex(i + 2, 3).setNumber(txn.amount);
+    final range = transactionsSheet.getRangeByIndex(i + 2, 3);
+    range.setNumber(txn.amount);
+    range.cellStyle = amountStyle;
     transactionsSheet.getRangeByIndex(i + 2, 4).setText(txn.category);
     transactionsSheet.getRangeByIndex(i + 2, 5).setText(txn.accountType);
   }
@@ -90,8 +93,12 @@ Future<void> exportToExcel({
             .fold(0.0, (sum, txn) => sum + txn.amount);
 
         summarySheet.getRangeByIndex(row, 1).setText(DateFormat('yyyy-MM-dd').format(dayDate));
-        summarySheet.getRangeByIndex(row, 2).setNumber(income);
-        summarySheet.getRangeByIndex(row, 3).setNumber(expense);
+        final incomeCell = summarySheet.getRangeByIndex(row, 2);
+        incomeCell.setNumber(income);
+        incomeCell.cellStyle = amountStyle;
+        final expenseCell = summarySheet.getRangeByIndex(row, 3);
+        expenseCell.setNumber(expense);
+        expenseCell.cellStyle = amountStyle;
         row++;
       } catch (_) {
         continue;
@@ -119,8 +126,12 @@ Future<void> exportToExcel({
           .fold(0.0, (sum, txn) => sum + txn.amount);
 
       summarySheet.getRangeByIndex(row, 1).setText(DateFormat('MMMM').format(DateTime(selectedDate.year, month)));
-      summarySheet.getRangeByIndex(row, 2).setNumber(income);
-      summarySheet.getRangeByIndex(row, 3).setNumber(expense);
+      final incomeCell = summarySheet.getRangeByIndex(row, 2);
+      incomeCell.setNumber(income);
+      incomeCell.cellStyle = amountStyle;
+      final expenseCell = summarySheet.getRangeByIndex(row, 3);
+      expenseCell.setNumber(expense);
+      expenseCell.cellStyle = amountStyle;
       row++;
     }
   }
@@ -131,7 +142,7 @@ Future<void> exportToExcel({
   summarySheet.autoFitColumn(3);
 
   try {
-    final directory = await getExternalStorageDirectory();
+    final directory = await getDownloadsDirectory();
     final filename = filterType == 'month'
         ? "financial_activities_${DateFormat('yyyy_MM').format(selectedDate)}.xlsx"
         : "annual_financials_${selectedDate.year}.xlsx";
