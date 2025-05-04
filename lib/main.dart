@@ -2,6 +2,7 @@ import 'package:financial_app/Calender/boxes.dart';
 import 'package:financial_app/Calender/transaction.dart';
 import 'package:financial_app/app_lock/app_lock_gate.dart';
 import 'package:financial_app/navigation_menu.dart';
+import 'package:financial_app/services/notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().initNotification();
 
   try {
     // Initialize Firebase

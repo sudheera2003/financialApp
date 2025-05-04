@@ -1,6 +1,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:financial_app/pages/expense_list.dart';
 import 'package:financial_app/pages/income_list.dart';
+import 'package:financial_app/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:financial_app/pages/currency_screen.dart';
 import 'package:financial_app/pages/account_type.dart';
@@ -145,6 +146,28 @@ class _MoreState extends State<More> {
                         size: 35,
                       ),
                       Text('App Lock',
+                          style: TextStyle(color: Colors.white, fontSize: 20)),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  width: 30,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    NotificationService().showNotification(
+                      title: "Title",
+                      body: "Body",
+                    );
+                  },
+                  child: Column(
+                    children: const [
+                      Icon(
+                        Icons.lock,
+                        color: Colors.white,
+                        size: 35,
+                      ),
+                      Text('noti',
                           style: TextStyle(color: Colors.white, fontSize: 20)),
                     ],
                   ),
